@@ -34,7 +34,7 @@ if (name === undefined || number === undefined) {
   })
 
   newContact.save()
-    .then(res => console.log(`Added ${name} number ${number} to phonebook`))
+    .then(() => console.log(`Added ${name} number ${number} to phonebook`))
     .catch(err => console.log('An error has ocurred trying to save the contact ' + err))
     .finally(() => mongoose.connection.close())
 }

@@ -1,3 +1,5 @@
+require('dotenv').config()
+const Contact = require('./models/contact')
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
@@ -52,7 +54,13 @@ app.use(morgan(function (tokens, req, res) {
 
 app.get('/', (req, res) => { res.send(welcomeAPI) })
 
-app.get('/contacts', (req, res) => res.send(userEntries))
+app.get('/contacts', (req, res) => {
+  Contact.find({})
+    .then(contact => {
+      console.log(contact)
+      res.json(contact)
+    })
+})
 
 app.get('/contacts/:id', (req, res) => {
   const id = Number(req.params.id)
@@ -113,7 +121,7 @@ const unknownPath = (req, res) => {
 }
 app.use(unknownPath)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`server started on ${PORT}`)
   console.log('')
