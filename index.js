@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
@@ -6,6 +7,30 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
 
+const password = process.argv[2]
+const DB_URI = `mongodb+srv://fullstack:${password}@cluster0.hlmbvx6.mongodb.net/ContactsApp?retryWrites=true&w=majority&appName=Cluster0`
+mongoose.connect(DB_URI)
+  .then(console.log('All god, monogDB connected'))
+  .catch(err => console.log(err))
+
+const contactSchema = new mongoose.Schema({
+  name: String,
+  number: Number
+})
+
+const Contact = mongoose.model('Contact', contactSchema)
+
+const newContact = new Contact({
+  name: 'Compa, me gusta mongoDB',
+  number: 5564548713
+})
+
+newContact.save()
+  .then((response) => {
+    console.log('Contacto guardado correctamente ' + response)
+    mongoose.connection.close()
+  })
+  .catch(() => console.log('Ha ocurrido un error papu'))
 let userEntries = [
   {
     id: 1,
