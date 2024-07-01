@@ -6,30 +6,6 @@ const morgan = require('morgan')
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(express.static('dist'))
-
-const userEntries = [
-  {
-    id: 1,
-    name: 'Arto Hellas',
-    number: '040-123456'
-  },
-  {
-    id: 2,
-    name: 'Ada Lovelace',
-    number: '39-44-5323523'
-  },
-  {
-    id: 3,
-    name: 'Dan Abramov',
-    number: '12-43-234345'
-  },
-  {
-    id: 4,
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122'
-  }
-]
 
 const welcomeAPI =
 `<h2>Porfavor continue con los endpoints apropiados</h2>
@@ -91,7 +67,7 @@ app.delete('/contacts/:id', (req, res, next) => {
     })
 })
 
-app.get('/info', (req, res) => {
+/* app.get('/info', (req, res) => {
   const fecha = new Date()
   const horas = fecha.getHours().toString().padStart(2, '0')
   const minutos = fecha.getMinutes().toString().padStart(2, '0')
@@ -102,7 +78,7 @@ app.get('/info', (req, res) => {
         `<p>Phonebook has info for ${userEntries.length} people</p>
         <p>${new Date().toDateString()}  ${horaFormateada} </p>
         `)
-})
+}) */
 
 app.post('/contacts', (req, res) => {
   const newContact = new Contact({
