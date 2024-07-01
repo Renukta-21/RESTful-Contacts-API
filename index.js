@@ -60,15 +60,20 @@ app.get('/contacts', (req, res) => {
       console.log(contact)
       res.json(contact)
     })
+    .catch(err => console.log('An error has ocurred: ' + err))
 })
 
 app.get('/contacts/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const entry = userEntries.find(user => user.id === id)
-  if (entry) {
-    return res.send(entry)
-  }
-  res.status(404).send({ error: 'User not found' })
+  Contact.findById(req.params.id)
+    .then(response => {
+      if (!response) {
+        const errorString = `Contact with ID=${req.params.id} wasn't found`
+        console.log(errorString)
+        return res.status(400).send({ error: errorString })
+      }
+      console.log('Se encontro JAJAJA ' + response)
+      res.send(response)
+    })
 })
 
 app.delete('/contacts/:id', (req, res) => {
@@ -95,25 +100,17 @@ app.get('/info', (req, res) => {
         `)
 })
 
-const getNewID = () => Math.max(...userEntries.map(user => user.id)) + 1
 app.post('/contacts', (req, res) => {
-  if (!req.body.name) {
-    return res.status(400).send({ error: 'No seas perra, usa la API bien' })
-  } else {
-    const userReg = userEntries.find(user => user.name.toLowerCase() === req.body.name.toLowerCase())
-    if (userReg) {
-      return res.status(409).send({ error: 'User already exists' })
-    }
-    const newContact = {
-      id: getNewID(),
-      name: req.body.name,
-      number: req.body.number || 'Not-specified'
-    }
-    userEntries = userEntries.concat(newContact)
-    res.send(newContact)
-  }
-
-  res.end()
+  const newContact = new Contact({
+    name: 'Hola pendejines',
+    number: 5630561334
+  })
+  newContact.save()
+    .then((result) => {
+      console.log('New contact added succefully: ' + result)
+      res.send(result)
+    })
+    .catch(err => console.log('An error has ocurred: ' + err))
 })
 
 const unknownPath = (req, res) => {
