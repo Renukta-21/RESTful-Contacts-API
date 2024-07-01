@@ -1,0 +1,7 @@
+PUT http://localhost:3001/contacts/6681f04da771a415aaf457fa
+Content-Type: application/json
+
+{
+    "name":"Michael Jackson",
+    "number": 728427832791
+}
