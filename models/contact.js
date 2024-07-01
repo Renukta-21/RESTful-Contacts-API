@@ -5,8 +5,12 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err => console.log('An error has ocurred ' + err))
 
 const contact = new mongoose.Schema({
-  name: String,
-  number: Number
+  name: {
+    type: String,
+    required: true,
+    minlength: 5
+  },
+  number: String
 })
 
 const Contact = mongoose.model('Contact', contact)

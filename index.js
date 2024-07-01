@@ -104,35 +104,39 @@ app.get('/info', (req, res) => {
         `)
 })
 
-app.post('/contacts', (req, res) => {
+app.post('/contacts', (req, res, next) => {
+  const regexExp = /^\d{2,3}-\d{4,6}$/g
+  if (!regexExp.test(req.body.number)) {
+    return res.status(400).send({ error: 'Bad number format, must be xx-xxxx, xx-xxxxx, xx-xxxxxx, xxx-xxxx,xxx-xxxxx or xxx-xxxxxx' })
+  }
+
   const newContact = new Contact({
     name: req.body.name,
-    number: req.body.number
+    number: String(req.body.number)
   })
   newContact.save()
     .then((result) => {
       console.log('New contact added succefully: ' + result)
       res.send(result)
     })
-    .catch(err => {
-      console.log('An error has ocurred: ' + err)
-    })
+    .catch(err => next(err))
 })
-app.put('/contacts/:id', (req, res) => {
+app.put('/contacts/:id', (req, res, next) => {
   const updatedContact = {
     name: req.body.name,
     number: req.body.number
   }
-  Contact.findByIdAndUpdate(req.params.id, updatedContact, { new: true })
-    .then(response => {
-      console.log(response)
-      res.status(200).end()
-    })
+  Contact.findByIdAndUpdate(req.body.id, updatedContact, { new: true })
+    .then(response => res.send(response))
+    .catch(err => next(err))
 })
 const errorHandler = (err, req, res, next) => {
   console.log(err.message)
   if (err.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted Id' })
+  }
+  if (err.name === 'ValidationError') {
+    return res.status(400).send({ error: 'Bad request ' + err.message })
   }
 }
 app.use(errorHandler)
