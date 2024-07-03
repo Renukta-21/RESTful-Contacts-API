@@ -1,9 +1,5 @@
 const mongoose = require('mongoose')
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Mongo Db is now connected '))
-  .catch(err => console.log('An error has ocurred ' + err))
-
 const contact = new mongoose.Schema({
   name: String,
   number: Number
