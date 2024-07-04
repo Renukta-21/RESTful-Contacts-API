@@ -68,19 +68,6 @@ app.delete('/contacts/:id', (req, res, next) => {
     })
 })
 
-/* app.get('/info', (req, res) => {
-  const fecha = new Date()
-  const horas = fecha.getHours().toString().padStart(2, '0')
-  const minutos = fecha.getMinutes().toString().padStart(2, '0')
-  const segundos = fecha.getSeconds().toString().padStart(2, '0')
-  const horaFormateada = `${horas}:${minutos}:${segundos}`
-
-  res.send(
-        `<p>Phonebook has info for ${.length} people</p>
-        <p>${new Date().toDateString()}  ${horaFormateada} </p>
-        `)
-}) */
-
 app.post('/contacts', (req, res, next) => {
   const regexExp = /^\d{2,3}-\d{4,6}$/g
   if (!regexExp.test(req.body.number)) {
