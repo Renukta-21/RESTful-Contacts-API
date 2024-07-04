@@ -19,7 +19,7 @@ contactRouter.get('/contacts', (req, res) => {
     .catch(err => console.log('An error has ocurred: ' + err))
 })
 
-contactRouter.get('/contacts/:id', (req, res, next) => {
+contactRouter.get('/:id', (req, res, next) => {
   Contact.findById(req.params.id)
     .then(response => {
       if (!response) {
@@ -35,7 +35,7 @@ contactRouter.get('/contacts/:id', (req, res, next) => {
     })
 })
 
-contactRouter.delete('/contacts/:id', (req, res, next) => {
+contactRouter.delete('/:id', (req, res, next) => {
   Contact.findByIdAndDelete(req.params.id)
     .then(response => {
       console.log(`Response: ${response}`)
@@ -47,20 +47,7 @@ contactRouter.delete('/contacts/:id', (req, res, next) => {
     })
 })
 
-/* contactRouter.get('/info', (req, res) => {
-  const fecha = new Date()
-  const horas = fecha.getHours().toString().padStart(2, '0')
-  const minutos = fecha.getMinutes().toString().padStart(2, '0')
-  const segundos = fecha.getSeconds().toString().padStart(2, '0')
-  const horaFormateada = `${horas}:${minutos}:${segundos}`
-
-  res.send(
-        `<p>Phonebook has info for ${userEntries.length} people</p>
-        <p>${new Date().toDateString()}  ${horaFormateada} </p>
-        `)
-}) */
-
-contactRouter.post('/contacts', (req, res) => {
+contactRouter.post('/', (req, res) => {
   const newContact = new Contact({
     name: req.body.name,
     number: req.body.number
@@ -75,7 +62,7 @@ contactRouter.post('/contacts', (req, res) => {
     })
 })
 
-contactRouter.put('/contacts/:id', (req, res) => {
+contactRouter.put('/:id', (req, res) => {
   const updatedContact = {
     name: req.body.name,
     number: req.body.number

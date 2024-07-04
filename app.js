@@ -14,7 +14,7 @@ app.use(cors())
 app.use(express.json())
 app.use(logger)
 
-app.use('/', contactRouter)
+app.use('/contacts', contactRouter)
 
 app.use(unknownPath)
 app.use(errorHandler)
